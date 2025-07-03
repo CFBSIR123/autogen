@@ -13,7 +13,7 @@ def classify_test_cases(
         description = case.get("description", "").lower()
         steps = case.get("steps", [])
         if strategy == "simple":
-            bad_keywords = ["异常", "错误", "失败", "无效", "空值", "越权", "非法"]
+            bad_keywords = ["异常", "错误", "失败", "无效", "空值", "越权", "非法","未"]
             good_keywords = ["成功", "正确", "有效", "正常", "通过"]
             if any(k in title or k in description for k in bad_keywords):
                 bad_cases.append(case)

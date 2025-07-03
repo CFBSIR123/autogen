@@ -102,16 +102,3 @@
 5. 查看生成的测试用例
 6. 如需要，导出到Excel
 
-## 许可证
-
-本项目采用MIT许可证 - 详情请参见LICENSE文件.
-
-课程咨询微信：huice666
-课程大纲：https://www.huicewang.com/
-
-![但问智能客服](frontend/public/weixin.jpg)
-
-=======
-# autogen
-基于大模型生成测试用例
->>>>>>> 84ea4599899dc07dff28474483e3cd03f5ecd845

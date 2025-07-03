@@ -15,7 +15,6 @@ def classify_test_cases(
         if strategy == "simple":
             bad_keywords = ["异常", "错误", "失败", "无效", "空值", "越权", "非法"]
             good_keywords = ["成功", "正确", "有效", "正常", "通过"]
-
             if any(k in title or k in description for k in bad_keywords):
                 bad_cases.append(case)
             elif any(k in title or k in description for k in good_keywords):
@@ -28,7 +27,6 @@ def classify_test_cases(
                     good_cases.append(case)
         elif strategy == "rule":
             good_cases.append(case)  # 可扩展为高级逻辑
-
     return {
         "good_cases": good_cases,
         "bad_cases": bad_cases,
@@ -75,6 +73,7 @@ def generalize_bad_cases(bad_cases: List[Dict]) -> Dict[str, int]:
     return dict(Counter(error_patterns))
 
 
+
 # 示例调试
 if __name__ == "__main__":
     sample_cases = [
@@ -95,9 +94,7 @@ if __name__ == "__main__":
             ]
         }
     ]
-
     result = classify_test_cases(sample_cases)
-
     print("✅ Good Cases:")
     for prompt in result["good_prompt_templates"]:
         print(prompt, "\n")

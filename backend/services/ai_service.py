@@ -16,7 +16,6 @@ class AIService:
         # 在真实实现中，你需要加载模型
         self.image_analysis_model = None
         self.test_case_generator_model = None
-
     async def generate_test_cases_stream_from_image(
         self,
         image_path: str,
@@ -44,16 +43,13 @@ class AIService:
 上下文信息: {context}
 
 需求: {requirements}
-
 请先以 Markdown 格式生成测试用例，包含以下内容：
 1. 测试用例 ID 和标题（使用二级标题格式，如 ## TC-001: 测试标题）
 2. 优先级（加粗显示，如 **优先级:** 高）
 3. 描述（加粗显示，如 **描述:** 测试描述）
 4. 前置条件（如果有，加粗显示，如 **前置条件:** 条件描述）
 5. 测试步骤和预期结果（使用标准 Markdown 表格格式）
-
 对于测试步骤表格，请使用以下格式：
-
 ```
 ### 测试步骤
 
@@ -62,11 +58,8 @@ class AIService:
 | 1 | 第一步描述 | 第一步预期结果 |
 | 2 | 第二步描述 | 第二步预期结果 |
 ```
-
 请确保表格格式正确，包含表头和分隔行。
-
 然后，在生成完 Markdown 格式的测试用例后，请生成结构化的测试用例数据，包含相同的内容，但使用 JSON 格式，以便于导出到 Excel。
-
 请确保测试用例覆盖全面，包含正向和负向测试场景。"""
 
         multi_modal_message = AGMultiModalMessage(content=[prompt, img], source="user")
@@ -76,13 +69,10 @@ class AIService:
             system_message="你是一个专业的测试用例生成器，擅长基于图像生成全面的测试用例。请以标准 Markdown 格式生成测试用例，包含正确的表格格式。",
             model_client_stream=True,  # 启用流式输出
         )
-
         # 首先输出标题
         yield "# 正在生成测试用例...\n\n"
-
         # 初始化测试用例列表
         markdown_buffer = ""
-
         # 流式输出生成的测试用例
         async for event in agent.run_stream(task=multi_modal_message):
             if isinstance(event, ModelClientStreamingChunkEvent):
@@ -93,12 +83,10 @@ class AIService:
             elif isinstance(event, TaskResult):
                 # 任务完成，处理最终结果
                 pass
-
         # 在流式输出结束后，尝试从 Markdown 中提取测试用例
         test_cases_json = self._extract_test_cases_from_markdown(markdown_buffer)
         if test_cases_json:
             yield "\n\n<!-- TEST_CASES_JSON: " + json.dumps(test_cases_json) + " -->\n"
-
     def _test_case_to_dict(self, test_case: TestCase) -> Dict[str, Any]:
         """
         将 TestCase 对象转换为字典
@@ -333,13 +321,11 @@ PRD文档内容:
     ) -> AsyncGenerator[str, None]:
         """
         统一的测试用例生成入口，根据输入类型调用相应的处理方法
-        
         参数:
             context: 用户提供的上下文
             requirements: 用户提供的需求
             image_path: 图像路径（可选）
             prd_text: PRD文档文本（可选）
-        
         产出:
             Markdown 格式的生成的测试用例块
         """

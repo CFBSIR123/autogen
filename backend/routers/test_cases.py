@@ -20,6 +20,8 @@ router = APIRouter(
 # 如果上传目录不存在，则创建
 os.makedirs("uploads", exist_ok=True)
 
+
+#返回流式
 @router.post("/generate")
 async def generate_test_cases(
     context: str = Form(...),
@@ -30,19 +32,16 @@ async def generate_test_cases(
 ):
     """
     从上传的图像或PRD文本、上下文和需求生成测试用例
-
     参数:
         context: 测试用例生成的上下文信息
         requirements: 测试用例生成的需求
         input_type: 输入类型 ('image' 或 'text')
         image: 上传的流程图、思维导图或UI截图（当input_type为'image'时必需）
         prd_text: PRD文档文本内容（当input_type为'text'时必需）
-
     返回:
         包含生成的测试用例的流式响应
     """
     image_path = None
-    
     if input_type == 'image':
         if not image:
             raise HTTPException(status_code=400, detail="图片输入模式下必须提供图片文件")
@@ -60,7 +59,6 @@ async def generate_test_cases(
             raise HTTPException(status_code=400, detail="PRD文本输入模式下必须提供PRD文档内容")
     else:
         raise HTTPException(status_code=400, detail="输入类型必须是'image'或'text'")
-
     # 使用流式响应生成测试用例
     return StreamingResponse(
         ai_service.generate_test_cases_stream(
@@ -71,6 +69,10 @@ async def generate_test_cases(
         ),
         media_type="text/markdown"
     )
+
+
+
+
 
 @router.post("/export")
 async def export_test_cases(test_cases: List[Union[TestCase, Dict[str, Any]]]):

@@ -4,6 +4,8 @@ import uvicorn
 import os
 
 from routers import test_cases
+from routers import text_cases_classifier
+
 
 # 如果上传目录不存在，则创建
 os.makedirs("uploads", exist_ok=True)
@@ -26,6 +28,7 @@ app.add_middleware(
 
 # 包含路由
 app.include_router(test_cases.router)
+app.include_router(text_cases_classifier.router)
 
 @app.get("/")
 async def root():
